@@ -6,3 +6,4 @@
 Este es un repositorio público en donde se publicarán diferentes proyectos
 
 [Tarea 1](/Tareas/Tarea_1.md)
+[Tarea 1](/Tareas/Tarea_2.md)
