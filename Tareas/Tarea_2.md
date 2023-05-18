@@ -1,4 +1,4 @@
-# MCD - Base de Datos Relacionales - Tarea 1
+# MCD - Base de Datos Relacionales - Tarea 2
 
 ## 1421582 - Claudia Lissette Gutiérrez Díaz
 
