@@ -104,11 +104,28 @@ erDiagram
 
 ## Operadores álgebra relacional
 ---
-| **Operación** 	| **Explicación** 	|
-|---	|---	|
-| ΠSucursal.codigo_postal[(σSucursal.id_estado=(Πid_estado(σEstados.abreviacion="TX"(Estados)).id (SucursalesxEstados)))U(σSucursal.id_compania=(Πid_compania(σCompanias.nombre="Bank of America"(Companias).id(SucursalesxCompanias)))] 	| Obtiene los códigos postales de las sucursales que sean de Bank of America en Texas. Selecciona los códigos postales de las sucursales, donde el id_estado de Sucursales, coincida con el cruce de id de Estados y donde la abreviación del Estado sea "TX", en intersección con el cruce de Sucursales y Compañías, donde el id_compania de Sucursales, coincida con el id de Companias y que el nombre de la Compañía sea "Bank of America". 	|
-| ΠProductos.nombre[σProductos.id=(Πid_producto(σProducto_Subproducto.id=(ΠQuejas.id_producto_subproducto(σQuejas.id_medio_comunicacion=(ΠMedios_Comunicacion.id(σMedios_Comunicacion.nombre="Phone"(Medios_Comunicacion))).id (QuejasxMedios_Comunicacion))).id(Producto_SubproductoxQuejas)).id_producto(ProductosxProducto_Subproducto)] 	| Obtiene los productos de las quejas que se han realizado mediante Teléfono. Selecciona el nombre del producto, cuyo id se encuentre entre el cruce de Productos y la relación Producto_Subproducto, cuyo id de Producto_Subproducto, se encuentre entre el cruce de Producto_Subproducto y Quejas, cuyo id de medio de comunicación (perteneciente a Quejas) se encuentre en el cruce entre Quejas y Medios_Comunicacion en donde el nombre del medio de comunicación sea "Phone". 	|
-| ΠQuejas.id[σQuejas.id_estatus_queja=(Πid_estatus_queja(σEstatus_Quejas.descripcion="Closed"(Estatus_Quejas))).id(QuejasxEstatus_Quejas)] 	| Obtener un listado de las quejas cerradas. Selecciona el id de las quejas, cuyo id_estatus_queja se encuentre entre el cruce de Quejas y Estatus_Quejas, donde la descripción del Estatus_Quejas sea "Closed". 	|
-| ΠAsuntos.descripcion[σAsuntos.id=(Πid_asunto(σAsunto_Subasunto.id=(Πid_asunto_subasunto(σQuejas.se_abre_disputa=0(Quejas))).id_asunto_subasunto(Asunto_SubasuntoxQuejas)).id_asunto(AsuntosxAsunto_Subasunto)] 	| Obtiene los asuntos de las quejas que no hayan presentado disputa. Selecciona la descripción de los Asuntos, cuyo id se encuentre entre el cruce de Asuntos y la relación Asunto_Subasunto, cuyo id de Asunto_Subasunto, se encuentre entre el cruce de Asunto_Subasunto y Quejas, donde se_abre_disputa, sea 0. 	|
+### Operación 1: Obtener los códigos postales de las sucursales que sean de Bank of America en Texas.
+<br>
+ΠSucursal.codigo_postal[(σSucursal.id_estado=(Πid_estado(σEstados.abreviacion="TX"(Estados)).id (SucursalesxEstados)))U(σSucursal.id_compania=(Πid_compania(σCompanias.nombre="Bank of America"(Companias).id(SucursalesxCompanias)))]<br><br>
+
+**Explicación:** Selecciona los códigos postales de las sucursales, donde el id_estado de Sucursales, coincida con el cruce de id de Estados y donde la abreviación del Estado sea "TX", en intersección con el cruce de Sucursales y Compañías, donde el id_compania de Sucursales, coincida con el id de Companias y que el nombre de la Compañía sea "Bank of America".<br><br>
+
+### Operación 2: Obtener los productos de las quejas que se han realizado mediante Teléfono.
+<br>
+ΠProductos.nombre[σProductos.id=(Πid_producto(σProducto_Subproducto.id=(ΠQuejas.id_producto_subproducto(σQuejas.id_medio_comunicacion=(ΠMedios_Comunicacion.id(σMedios_Comunicacion.nombre="Phone"(Medios_Comunicacion))).id (QuejasxMedios_Comunicacion))).id(Producto_SubproductoxQuejas)).id_producto(ProductosxProducto_Subproducto)]<br><br>
+
+**Explicación:** Selecciona el nombre del producto, cuyo id se encuentre entre el cruce de Productos y la relación Producto_Subproducto, cuyo id de Producto_Subproducto, se encuentre entre el cruce de Producto_Subproducto y Quejas, cuyo id de medio de comunicación (perteneciente a Quejas) se encuentre en el cruce entre Quejas y Medios_Comunicacion en donde el nombre del medio de comunicación sea "Phone".<br><br>
+
+### Operación 3: Obtener un listado de las quejas cerradas.
+<br>
+ΠQuejas.id[σQuejas.id_estatus_queja=(Πid_estatus_queja(σEstatus_Quejas.descripcion="Closed"(Estatus_Quejas))).id(QuejasxEstatus_Quejas)]<br><br>
+
+**Explicación:** Selecciona el id de las quejas, cuyo id_estatus_queja se encuentre entre el cruce de Quejas y Estatus_Quejas, donde la descripción del Estatus_Quejas sea "Closed".<br><br>
+
+### Operación 4: Obtener los asuntos de las quejas que no hayan presentado disputa.
+<br>
+ΠAsuntos.descripcion[σAsuntos.id=(Πid_asunto(σAsunto_Subasunto.id=(Πid_asunto_subasunto(σQuejas.se_abre_disputa=0(Quejas))).id_asunto_subasunto(Asunto_SubasuntoxQuejas)).id_asunto(AsuntosxAsunto_Subasunto)]<br><br>
+
+**Explicación:** Selecciona la descripción de los Asuntos, cuyo id se encuentre entre el cruce de Asuntos y la relación Asunto_Subasunto, cuyo id de Asunto_Subasunto, se encuentre entre el cruce de Asunto_Subasunto y Quejas, donde se_abre_disputa, sea 0.
 
 
