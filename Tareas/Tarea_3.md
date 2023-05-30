@@ -47,7 +47,7 @@ erDiagram
         int id PK
         varchar(20) nombre
     }
-    Medios_Cominicacion ||--o{ Quejas : "Contiene/Se hizo"
+    Medios_Comunicacion ||--o{ Quejas : "Contiene/Se hizo"
     Estatus_Quejas{
         int id PK
         varchar(40) descripcion
