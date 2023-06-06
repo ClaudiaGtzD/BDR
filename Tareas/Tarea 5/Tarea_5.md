@@ -18,6 +18,8 @@ Después, para la inserción de los datos, ejecutar el siguiente [script](/Tarea
 
 ![Video](/Tareas/Tarea%205/Videos/Not_Recognize.mp4)
 
+https://youtu.be/BHC5UskLkIA
+
 <video width="320" height="240" controls>
   <source src="/Videos/Not_Recognize.mp4" type="video/mp4">
 </video>
