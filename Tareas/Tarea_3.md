@@ -4,18 +4,19 @@
 
 ## Esquema modelo relacional
 ---
-Companias(id, nombre)<br>
-Estados(id, nombre, abreviacion)<br>
-Sucursales(id, id_compania, id_estado, codigo_postal)<br>
-Medios_Cominicacion(id, nombre)<br>
-Estatus_Quejas(id, descripcion)<br>
-Productos(id, nombre)<br>
-Subproductos(id, nombre)<br>
-Producto_Subproducto(id, id_producto, id_subproducto)<br>
-Asuntos(id, descripcion)<br>
-Subasuntos(id, descripcion)<br>
-Asunto_Subasunto(id, id_asunto, id_subasunto)<br>
-Quejas(id, fecha_recepcion, fecha_envio, id_producto_subproducto, id_asunto_subasunto, descripcion_queja, descripcion_solucion, id_sucursal, etiquetas, consentimiento_cliente, id_medio_comunicacion, id_estatus_queja, respuesta_a_tiempo, se_abre_disputa)
+Companias(<u>id</u>, nombre)<br>
+Estados(<u>id</u>, nombre, abreviacion)<br>
+Sucursales(<u>id</u>, id_compania, id_estado, codigo_postal)<br>
+Medios_Cominicacion(<u>id</u>, nombre)<br>
+Estatus_Quejas(<u>id</u>, descripcion)<br>
+Productos(<u>id</u>, nombre)<br>
+Subproductos(<u>id</u>, nombre)<br>
+Producto_Subproducto(<u>id</u>, id_producto, id_subproducto)<br>
+Asuntos(<u>id</u>, descripcion)<br>
+Subasuntos(<u>id</u>, descripcion)<br>
+Asunto_Subasunto(<u>id</u>, id_asunto, id_subasunto)<br>
+Estatus_Autorizacion(<u>id</u>, descripcion)<br>
+Quejas(<u>id</u>, fecha_recepcion, fecha_envio, id_producto_subproducto, id_asunto_subasunto, descripcion_queja, descripcion_solucion, id_sucursal, etiquetas, id_consentimiento_cliente, id_medio_comunicacion, id_estatus_queja, respuesta_a_tiempo, se_abre_disputa)
 
 ## Diagrama relacional
 ---
@@ -23,6 +24,27 @@ Quejas(id, fecha_recepcion, fecha_envio, id_producto_subproducto, id_asunto_suba
 ---
 title: Recopilación de quejas de clientes
 ---
+
+CREATE TABLE Temporal(
+	fecha_recepcion varchar(10),
+	fecha_envio varchar(10),
+	producto varchar(50),
+	subproducto varchar(50),
+	asunto varchar(50),
+	subasunto varchar(50),
+	descripcion_queja varchar(6000),
+	descripcion_solucion varchar(3000),
+	compania varchar(100),
+	estado_abbr varchar(100),
+	estado varchar(100),	
+	sucursal varchar(3000),
+	etiquetas varchar(50),
+	estatus_autorizacion varchar(30),
+	medio_comunicacion varchar(100),
+	estatus_queja varchar(50),
+	respuesta_a_tiempo varchar(4),
+	se_abre_disputa varchar(3000)
+);
 
 erDiagram
     Companias {
@@ -40,10 +62,10 @@ erDiagram
         int id PK
         int id_compania FK
         int id_estado FK
-        int codigo_postal
+        varchar(6) codigo_postal
     }
     Sucursales ||--o{ Quejas : "Contiene/Pertenece"
-    Medios_Cominicacion{
+    Medios_Comunicacion{
         int id PK
         varchar(20) nombre
     }
@@ -85,6 +107,11 @@ erDiagram
         int id_subasunto FK
     }
     Asunto_Subasunto ||--o{ Quejas : "Puede tener/Se categoriza"
+    Estatus_Autorizacion{
+        int id PK
+        varchar(30) descripcion
+    }
+    Estatus_Autorizacion ||--o{ Quejas : "Tiene/Se le asocia"
     Quejas{
         int id PK
         datetime fecha_recepcion
@@ -95,7 +122,7 @@ erDiagram
         varchar(max) descripcion_solucion
         int id_sucursal FK
         varchar(50) etiquetas
-        tinyint consentimiento_cliente
+        int id_estatus_autorizacion FK
         int id_medio_comunicacion FK
         int id_estatus_queja FK
         tinyint respuesta_a_tiempo

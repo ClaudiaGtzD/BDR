@@ -6,7 +6,7 @@
  ********************************************/
 
 /*Creación de Base de Datos Servicio_Clientes*/
-DROP DATABASE IF EXISTS Servicio_Clientes;
+DROP DATABASE IF EXISTS servicio_clientes;
 CREATE DATABASE Servicio_Clientes;
 
 /*Inicio de uso de Base de Datos*/
@@ -14,6 +14,7 @@ USE Servicio_Clientes;
 
 /*Eliminación de tablas */
 DROP TABLE IF EXISTS Quejas;
+DROP TABLE IF EXISTS Estatus_Autorizacion;
 DROP TABLE IF EXISTS Asunto_Subasunto;
 DROP TABLE IF EXISTS Producto_Subproducto;
 DROP TABLE IF EXISTS Sucursales;
@@ -30,7 +31,8 @@ DROP TABLE IF EXISTS Subasuntos;
 /*Compañías*/
 CREATE TABLE Companias(
 	id int NOT NULL auto_increment PRIMARY KEY,
-	nombre varchar(100)
+	nombre varchar(100),
+	KEY (nombre)
 );
 
 INSERT INTO Companias (nombre)
@@ -133,37 +135,37 @@ CREATE TABLE Sucursales(
 	FOREIGN KEY (id_compania) REFERENCES Companias(id),
 	id_estado int,
 	FOREIGN KEY (id_estado) REFERENCES Estados(id),
-	codigo_postal int
+	codigo_postal varchar(6)
 );
 
 /*Ocupamos una temporal de transición*/
 CREATE TABLE Temporal(
 	nombre varchar(100),
 	abreviacion varchar(2),
-	codigo_postal int
+	codigo_postal varchar(6)
 );
 
 INSERT INTO Temporal (nombre, abreviacion, codigo_postal)
-VALUES ('Wells Fargo & Company', 'VA', 24540),
-('Wells Fargo & Company', 'CA', 95992),
-('Santander Bank US', 'NY', 10065),
-('Wells Fargo & Company', 'GA', 30084),
-('Franklin Credit Management', 'CT', 6106),
-('Bank of America', 'TX', 75025),
-('NRA Group, LLC', 'VA', 20147),
-('SunTrust Banks, Inc.', 'FL', 32818),
-('Citibank', 'OH', 45247),
-('Wells Fargo & Company', 'NV', 89511),
-('Bank of America', 'NC', 27949),
-('JPMorgan Chase & Co.', 'CA', 90703),
-('Citibank', 'CA', 95821),
-('Asset Management Professionals, LLC', 'PA', 19145),
-('Wells Fargo & Company', 'PA', 19145),
-('JPMorgan Chase & Co.', 'NY', 14092),
-('Ocwen', 'FL', 33426),
-('JPMorgan Chase & Co.', 'NY', 10019),
-('Citibank', 'NJ', 7604),
-('Synchrony Financial', 'WA', 98548);
+VALUES ('Wells Fargo & Company', 'VA', '24540'),
+('Wells Fargo & Company', 'CA', '95992'),
+('Santander Bank US', 'NY', '10065'),
+('Wells Fargo & Company', 'GA', '30084'),
+('Franklin Credit Management', 'CT', '6106'),
+('Bank of America', 'TX', '75025'),
+('NRA Group, LLC', 'VA', '20147'),
+('SunTrust Banks, Inc.', 'FL', '32818'),
+('Citibank', 'OH', '45247'),
+('Wells Fargo & Company', 'NV', '89511'),
+('Bank of America', 'NC', '27949'),
+('JPMorgan Chase & Co.', 'CA', '90703'),
+('Citibank', 'CA', '95821'),
+('Asset Management Professionals, LLC', 'PA', '19145'),
+('Wells Fargo & Company', 'PA', '19145'),
+('JPMorgan Chase & Co.', 'NY', '14092'),
+('Ocwen', 'FL', '33426'),
+('JPMorgan Chase & Co.', 'NY', '10019'),
+('Citibank', 'NJ', '7604'),
+('Synchrony Financial', 'WA', '98548');
 
 INSERT INTO Sucursales (id_compania, id_estado, codigo_postal)
 SELECT c.id, e.id, t.codigo_postal
@@ -589,6 +591,11 @@ INNER JOIN subasuntos s
 
 DROP TABLE Temporal;
 
+CREATE TABLE Estatus_Autorizacion(
+	id int NOT NULL auto_increment PRIMARY KEY,
+	descripcion varchar(50)
+);
+
 /*Quejas*/
 
 CREATE TABLE Quejas(
@@ -604,19 +611,20 @@ CREATE TABLE Quejas(
 	id_sucursal int,
 	FOREIGN KEY (id_sucursal) REFERENCES Sucursales(id),
 	etiquetas varchar(50),
-	consentimiento_cliente TINYINT,
+	id_estatus_autorizacion int,
+	FOREIGN KEY (id_estatus_autorizacion) REFERENCES Estatus_Autorizacion(id),
 	id_medio_comunicacion int,
 	FOREIGN KEY (id_medio_comunicacion) REFERENCES Medios_Comunicacion(id),
 	id_estatus_queja int,
 	FOREIGN KEY (id_estatus_queja) REFERENCES Estatus_Quejas(id),
-	respuesta_a_tiempo TINYINT,
+	respuesta_a_tiempo tinyint,
 	se_abre_disputa tinyint
 );
 
 /*Tabla temporal de transición*/
 CREATE TABLE Temporal(
-	fecha_recepcion datetime,
-	fecha_envio datetime,
+	fecha_recepcion date,
+	fecha_envio date,
 	producto varchar(50),
 	subproducto varchar(50),
 	asunto varchar(50),
@@ -625,44 +633,44 @@ CREATE TABLE Temporal(
 	descripcion_solucion varchar(3000),
 	compania varchar(100),
 	estado varchar(2),
-	sucursal int,
+	sucursal varchar(6),
 	etiquetas varchar(50),
-	consentimiento_cliente TINYINT,
+	estatus_autorizacion varchar(30),
 	medio_comunicacion varchar(20),
 	estatus_queja varchar(50),
-	respuesta_a_tiempo TINYINT,
-	se_abre_disputa tinyint
+	respuesta_a_tiempo varchar(4),
+	se_abre_disputa varchar(4)
 );
 
 INSERT INTO Temporal (fecha_recepcion, fecha_envio, producto, subproducto, asunto, subasunto, descripcion_queja,
-	descripcion_solucion, compania, estado, sucursal, etiquetas, consentimiento_cliente, medio_comunicacion,
+	descripcion_solucion, compania, estado, sucursal, etiquetas, estatus_autorizacion, medio_comunicacion,
 	estatus_queja, respuesta_a_tiempo, se_abre_disputa)
-VALUES ('2013-07-29', '2013-07-29', 'Consumer Loan', 'Vehicle loan', 'Managing the loan or lease', '', '', '', 'Wells Fargo & Company', 'VA', 24540, '', 0, 'Phone', 'Closed with explanation', 1, 0),
-('2013-07-29', '2013-07-29', 'Bank account or service', 'Checking account', 'Using a debit or ATM card', '', '', '', 'Wells Fargo & Company', 'CA', 95992, 'Older American', 0, 'Web', 'Closed with explanation', 1, 0),
-('2013-07-29', '2013-07-29', 'Bank account or service', 'Checking account', 'Account opening, closing, or management', '', '', '', 'Santander Bank US', 'NY', 10065, '', 0, 'Fax', 'Closed', 1, 0),
-('2013-07-29', '2013-07-30', 'Bank account or service', 'Checking account', 'Deposits and withdrawals', '', '', '', 'Wells Fargo & Company', 'GA', 30084, '', 0, 'Web', 'Closed with explanation', 1, 0),
-('2013-07-29', '2013-07-30', 'Mortgage', 'Conventional fixed mortgage', 'Loan servicing, payments, escrow account', '', '', '', 'Franklin Credit Management', 'CT', 6106, '', 0, 'Web', 'Closed with explanation', 1, 0),
-('2013-07-29', '2013-07-30', 'Bank account or service', 'Checking account', 'Deposits and withdrawals', '', '', '', 'Bank of America', 'TX', 75025, '', 0, 'Web', 'Closed with explanation', 1, 0),
-('2013-07-29', '2013-08-07', 'Debt collection', 'Other (i.e. phone, health club, etc.)', 'Cont''d attempts collect debt not owed', 'Debt is not mine', '', '', 'NRA Group, LLC', 'VA', 20147, '', 0, 'Web', 'Closed with non-monetary relief', 1, 0),
-('2013-07-29', '2013-08-01', 'Debt collection', 'I do not know', 'Cont''d attempts collect debt not owed', 'Debt was paid', '', '', 'SunTrust Banks, Inc.', 'FL', 32818, '', 0, 'Referral', 'Closed with explanation', 1, 1),
-('2013-07-29', '2013-07-30', 'Credit card', '', 'Billing statement', '', '', '', 'Citibank', 'OH', 45247, '', 0, 'Referral', 'Closed with explanation', 1, 1),
-('2013-07-29', '2013-07-30', 'Mortgage', 'Other mortgage', 'Loan servicing, payments, escrow account', '', '', '', 'Wells Fargo & Company', 'NV', 89511, '', 0, 'Referral', 'Closed with explanation', 1, 1),
-('2013-07-29', '2013-07-30', 'Mortgage', 'Other mortgage', 'Loan modification,collection,foreclosure', '', '', '', 'Bank of America', 'NC', 27949, '', 0, 'Referral', 'Closed with non-monetary relief', 1, 0),
-('2013-07-29', '2013-07-30', 'Mortgage', 'Other mortgage', 'Loan servicing, payments, escrow account', '', '', '', 'JPMorgan Chase & Co.', 'CA', 90703, '', 0, 'Referral', 'Closed with explanation', 1, 0),
-('2013-07-29', '2013-07-31', 'Mortgage', 'Other mortgage', 'Loan modification,collection,foreclosure', '', '', '', 'Citibank', 'CA', 95821, '', 0, 'Referral', 'Closed with explanation', 1, 1),
-('2013-07-29', '2013-08-01', 'Debt collection', 'Credit card', 'Communication tactics', 'Frequent or repeated calls', '', '', 'Asset Management Professionals, LLC', 'PA', 19145, 'Older American', 0, 'Phone', 'Closed with explanation', 0, 0),
-('2013-07-29', '2013-08-01', 'Debt collection', 'Credit card', 'Communication tactics', 'Frequent or repeated calls', '', '', 'Wells Fargo & Company', 'PA', 19145, 'Older American', 0, 'Phone', 'Closed with non-monetary relief', 1, 0),
-('2013-07-29', '2013-07-31', 'Mortgage', 'Conventional fixed mortgage', 'Loan modification,collection,foreclosure', '', '', '', 'JPMorgan Chase & Co.', 'NY', 14092, '', 0, 'Phone', 'Closed with explanation', 1, 0),
-('2013-07-29', '2013-07-31', 'Mortgage', 'Conventional fixed mortgage', 'Loan modification,collection,foreclosure', '', '', '', 'Ocwen', 'FL', 33426, '', 0, 'Web', 'Closed with explanation', 1, 1),
-('2013-07-29', '2013-07-30', 'Mortgage', 'Conventional fixed mortgage', 'Loan modification,collection,foreclosure', '', '', '', 'JPMorgan Chase & Co.', 'NY', 10019, '', 0, 'Web', 'Closed with explanation', 1, 1),
-('2013-07-29', '2013-07-30', 'Mortgage', 'Conventional fixed mortgage', 'Loan servicing, payments, escrow account', '', '', '', 'Citibank', 'NJ', 7604, '', 0, 'Web', 'Closed with explanation', 1, 0),
-('2013-07-29', '2013-07-29', 'Credit card', '', 'APR or interest rate', '', '', '', 'Synchrony Financial', 'WA', 98548, '', 0, 'Web', 'Closed with monetary relief', 1, 0);
+VALUES ('2013-07-29', '2013-07-30', 'Consumer Loan', 'Vehicle loan', 'Managing the loan or lease', '', '', '', 'Wells Fargo & Company', 'VA', '24540', '', 'N/A', 'Phone', 'Closed with explanation', 1, 0),
+('2013-07-29', '2013-07-31', 'Bank account or service', 'Checking account', 'Using a debit or ATM card', '', '', '', 'Wells Fargo & Company', 'CA', '95992', 'Older American', 'N/A', 'Web', 'Closed with explanation', 1, 0),
+('2013-07-29', '2013-07-31', 'Bank account or service', 'Checking account', 'Account opening, closing, or management', '', '', '', 'Santander Bank US', 'NY', '10065', '', 'N/A', 'Fax', 'Closed', 1, 0),
+('2013-07-29', '2013-07-30', 'Bank account or service', 'Checking account', 'Deposits and withdrawals', '', '', '', 'Wells Fargo & Company', 'GA', '30084', '', 'N/A', 'Web', 'Closed with explanation', 1, 0),
+('2013-07-29', '2013-07-30', 'Mortgage', 'Conventional fixed mortgage', 'Loan servicing, payments, escrow account', '', '', '', 'Franklin Credit Management', 'CT', '6106', '', 'N/A', 'Web', 'Closed with explanation', 1, 0),
+('2013-07-29', '2013-07-30', 'Bank account or service', 'Checking account', 'Deposits and withdrawals', '', '', '', 'Bank of America', 'TX', '75025', '', 'N/A', 'Web', 'Closed with explanation', 1, 0),
+('2013-07-29', '2013-08-07', 'Debt collection', 'Other (i.e. phone, health club, etc.)', 'Cont''d attempts collect debt not owed', 'Debt is not mine', '', '', 'NRA Group, LLC', 'VA', '20147', '', 'N/A', 'Web', 'Closed with non-monetary relief', 1, 0),
+('2013-07-29', '2013-08-01', 'Debt collection', 'I do not know', 'Cont''d attempts collect debt not owed', 'Debt was paid', '', '', 'SunTrust Banks, Inc.', 'FL', '32818', '', 'N/A', 'Referral', 'Closed with explanation', 1, 1),
+('2013-07-29', '2013-07-30', 'Credit card', '', 'Billing statement', '', '', '', 'Citibank', 'OH', '45247', '', 'N/A', 'Referral', 'Closed with explanation', 1, 1),
+('2013-07-29', '2013-07-30', 'Mortgage', 'Other mortgage', 'Loan servicing, payments, escrow account', '', '', '', 'Wells Fargo & Company', 'NV', '89511', '', 'N/A', 'Referral', 'Closed with explanation', 1, 1),
+('2013-07-29', '2013-07-30', 'Mortgage', 'Other mortgage', 'Loan modification,collection,foreclosure', '', '', '', 'Bank of America', 'NC', '27949', '', 'N/A', 'Referral', 'Closed with non-monetary relief', 1, 0),
+('2013-07-29', '2013-07-30', 'Mortgage', 'Other mortgage', 'Loan servicing, payments, escrow account', '', '', '', 'JPMorgan Chase & Co.', 'CA', '90703', '', 'N/A', 'Referral', 'Closed with explanation', 1, 0),
+('2013-07-29', '2013-07-31', 'Mortgage', 'Other mortgage', 'Loan modification,collection,foreclosure', '', '', '', 'Citibank', 'CA', '95821', '', 'N/A', 'Referral', 'Closed with explanation', 1, 1),
+('2013-07-29', '2013-08-01', 'Debt collection', 'Credit card', 'Communication tactics', 'Frequent or repeated calls', '', '', 'Asset Management Professionals, LLC', 'PA', '19145', 'Older American', 'N/A', 'Phone', 'Closed with explanation', 0, 0),
+('2013-07-29', '2013-08-01', 'Debt collection', 'Credit card', 'Communication tactics', 'Frequent or repeated calls', '', '', 'Wells Fargo & Company', 'PA', '19145', 'Older American', 'N/A', 'Phone', 'Closed with non-monetary relief', 1, 0),
+('2013-07-29', '2013-07-31', 'Mortgage', 'Conventional fixed mortgage', 'Loan modification,collection,foreclosure', '', '', '', 'JPMorgan Chase & Co.', 'NY', '14092', '', 'N/A', 'Phone', 'Closed with explanation', 1, 0),
+('2013-07-29', '2013-07-31', 'Mortgage', 'Conventional fixed mortgage', 'Loan modification,collection,foreclosure', '', '', '', 'Ocwen', 'FL', '33426', '', 'N/A', 'Web', 'Closed with explanation', 1, 1),
+('2013-07-29', '2013-07-30', 'Mortgage', 'Conventional fixed mortgage', 'Loan modification,collection,foreclosure', '', '', '', 'JPMorgan Chase & Co.', 'NY', '10019', '', 'N/A', 'Web', 'Closed with explanation', 1, 1),
+('2013-07-29', '2013-07-30', 'Mortgage', 'Conventional fixed mortgage', 'Loan servicing, payments, escrow account', '', '', '', 'Citibank', 'NJ', '7604', '', 'N/A', 'Web', 'Closed with explanation', 1, 0),
+('2013-07-29', '2013-07-29', 'Credit card', '', 'APR or interest rate', '', '', '', 'Synchrony Financial', 'WA', '98548', '', 'N/A', 'Web', 'Closed with monetary relief', 1, 0);
 
 INSERT INTO Quejas (fecha_recepcion, fecha_envio, id_producto_subproducto, id_asunto_subasunto, descripcion_queja,
-	descripcion_solucion, id_sucursal, etiquetas, consentimiento_cliente, id_medio_comunicacion,
+	descripcion_solucion, id_sucursal, etiquetas, id_estatus_autorizacion, id_medio_comunicacion,
 	id_estatus_queja, respuesta_a_tiempo, se_abre_disputa)
 SELECT t.fecha_recepcion, t.fecha_envio, ps.id, asu.id, t.descripcion_queja,
-	t.descripcion_solucion, suc.id, t.etiquetas, t.consentimiento_cliente, mc.id,
+	t.descripcion_solucion, suc.id, t.etiquetas, ea.id, mc.id,
 	eq.id, t.respuesta_a_tiempo, t.se_abre_disputa
 FROM Temporal t
 INNER JOIN productos p
@@ -690,6 +698,8 @@ INNER JOIN sucursales suc
 INNER JOIN medios_comunicacion mc 
 	ON mc.nombre  = t.medio_comunicacion
 INNER JOIN estatus_quejas eq
-	ON eq.descripcion = t.estatus_queja;
+	ON eq.descripcion = t.estatus_queja
+INNER JOIN estatus_autorizacion ea
+	on ea.descripcion = t.estatus_autorizacion;
 
 DROP TABLE Temporal;
