@@ -11,3 +11,4 @@ A continuación enlisto las tareas y reportes.
 [Tarea 3](/Tareas/Tarea_3.md)<br>
 [Tarea 4](/Tareas/Tarea%204%20BD%20Customer%20Service.sql)<br>
 [Tarea 5](/Tareas/Tarea%205/Tarea_5.md) [Carpeta Tarea 5](/Tareas/Tarea%205/)<br>
+[Tarea 6](/Tareas/Tarea_6.md)<br>
