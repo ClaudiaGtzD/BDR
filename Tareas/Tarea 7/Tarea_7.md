@@ -46,22 +46,22 @@ COMMIT;
 ROLLBACK;
 ```
 
-# Estatus Quejas
+### Estatus Quejas
 ---
 
 Los datos se ven bien y no requieren cambios.
 
-# Medios de comunicación
+### Medios de comunicación
 ---
 
 Los datos se ven bien y no requieren cambios.
 
-# Productos
+### Productos
 ---
 
 Los datos se ven bien y no rquieren cambios.
 
-# Subasuntos
+### Subasuntos
 ---
 
 Los datos tienen el mismo problema de las dobles comillas simples, por lo que utilizamos el mismo query anterior.
@@ -74,7 +74,7 @@ COMMIT;
 ROLLBACK;
 ```
 
-# Subproductos
+### Subproductos
 ---
 
 En esta tabla hay un registro que tiene símbolos extraños, por lo que opto por hacer un update de ese registro directamente para corregirlo.
@@ -88,7 +88,7 @@ COMMIT;
 ROLLBACK;
 ```
 
-# Sucursales
+### Sucursales
 ---
 
 En esta tabla existen códigos postales, pero tienen dígitos disparejos, por lo que emplearemos ___LPAD___ para rellenar con ceros a la izquierda para que los dígitos de todos coincidan.
@@ -103,7 +103,7 @@ COMMIT;
 ROLLBACK;
 ```
 
-#Quejas
+### Quejas
 ---
 
 Al ser esta la tabla principal, está compuesta prácticamente por primary keys de otras tablas, por lo que se necesita actualizar.
