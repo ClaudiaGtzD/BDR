@@ -13,3 +13,4 @@ A continuación enlisto las tareas y reportes.
 [Tarea 5](/Tareas/Tarea%205/Tarea_5.md) [Carpeta Tarea 5](/Tareas/Tarea%205/)<br>
 [Tarea 6](/Tareas/Tarea_6.md)<br>
 [Tarea 7](/Tareas/Tarea%207/Tarea_7.md) [Carpeta Tarea 7](/Tareas/Tarea%207/)<br>
+[Tarea 8](/Tareas/Tarea%208/Tarea_8.md) [Carpeta Tarea 9](/Tareas/Tarea%208/)<br>
