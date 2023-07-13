@@ -15,3 +15,4 @@ A continuación enlisto las tareas y reportes.
 [Tarea 7](/Tareas/Tarea%207/Tarea_7.md) [Carpeta Tarea 7](/Tareas/Tarea%207/)<br>
 [Tarea 8](/Tareas/Tarea%208/Tarea_8.md) [Carpeta Tarea 8](/Tareas/Tarea%208/)<br>
 [Tarea 9](/Tareas/Tarea%209/Tarea_9.md) [Carpeta Tarea 9](/Tareas/Tarea%209/)<br>
+[Tarea 10](/Tareas/Tarea_10.ipynb)<br>
